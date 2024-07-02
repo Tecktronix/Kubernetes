@@ -1,0 +1,27 @@
+################################################
+# Name: Oluwatosin Ogunfile
+#
+# Date: 02/07/2024
+#
+# Title: Deployment of an Ingress Controller, two services, and two deployments
+#
+################################################
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-1
+  labels:
+    app: tectronix-1
+    path: home
+spec:
+  type: NodePort
+  selector:
+    app: tectronix-1
+    path: home
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30007
+    name: apache2

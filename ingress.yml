@@ -1,0 +1,34 @@
+################################################
+# Name: Oluwatosin Ogunfile
+#
+# Date: 02/07/2024
+#
+# Title: Deployment of an Ingress Controller, two services, and two deployments
+#
+################################################
+
+# Ingress Resource Deployment
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tectronix-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tectronix-1
+            port:
+              number: 80
+      - path: /intranet
+        pathType: Prefix
+        backend:
+          service:
+            name: tectronix-2
+            port:
+              number: 80

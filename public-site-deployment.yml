@@ -1,0 +1,50 @@
+################################################
+# Name: Oluwatosin Ogunfile
+#
+# Date: 02/07/2024
+#
+# Title: Deployment of an Ingress Controller, two services, and two deployments
+#
+################################################
+
+# App-1 Deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tectronix-1-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tectronix-1
+      path: home
+  template:
+    metadata:
+      labels:
+        app: tectronix-1
+        path: home
+    spec:
+      containers:
+      - name: apache2
+        image: ubuntu/apache2:latest
+        volumeMounts:
+        - name: apache2-config-volume
+          mountPath: /etc/apache2/apache2.conf
+          subPath: apache2.conf
+        - name: apache2-config-volume
+          mountPath: /srv/www/index.html
+          subPath: index.html
+        ports:
+        - containerPort: 80
+          name: apache2
+          protocol: TCP
+      volumes:
+      - name: apache2-config-volume
+        configMap:
+          name: apache2-config-svr1
+          items:
+          - key: apache2
+            path: apache2.conf
+          - key: apache2-site
+            path: index.html
